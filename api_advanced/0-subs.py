@@ -17,4 +17,3 @@ def number_of_subscribers(subreddit):
             print("We got the data")
             return data.get('subscribers', 0)
     return 0
-    
