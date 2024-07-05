@@ -4,22 +4,27 @@ Returns the number of subscribers from a subreddit
 """
 import requests
 
+
 def number_of_subscribers(subreddit):
     """ Set a custom header user-agent """
     headers = {"User-Agent": "ALU-scripting API 0.1"}
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
 
     try:
-        response = requests.get(url, headers=headers, timeout=30, allow_redirects=False)
-        response.raise_for_status()  # Raises an HTTPError for bad responses
+        response = requests.get(url, headers=headers,
+                                timeout=30, allow_redirects=False)
+
     except requests.exceptions.Timeout:
-        return "The request timed out"
-    except requests.exceptions.RequestException as e:
-        return f"An error occurred: {e}"
+        return "The request Timed out"
 
     if response.status_code == 200:
         json_data = response.json()
-        subscriber_number = json_data.get("data", {}).get("subscribers", 0)
+        subscriber_number = (
+            json_data.get("data")
+            .get("children")[0]
+            .get("data")
+            .get("subreddit_subscribers")
+        )
         return subscriber_number
     elif response.status_code == 404:
         return 0
