@@ -1,27 +1,16 @@
 #!/usr/bin/python3
-"""
-Returns the number of subscribers from a subreddit
-"""
+"""Script that fetch 10 hot post for a given subreddit."""
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """ Set a custom header user-agent """
-    headers = {"User-Agent": "ALU-scripting API 0.1"}
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
-
-    try:
-        response = requests.get(url, headers=headers,
-                                timeout=30, allow_redirects=False)
-
-    except requests.exceptions.Timeout:
-        return "The request Timed out"
+    """Return the number of subscribers for the given subreddit."""
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {'User-Agent': 'My User Agent 1.0'}
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
     if response.status_code == 200:
-        json_data = response.json()
-        subscriber_number = json_data
-        return subscriber_number
-    elif response.status_code == 404:
-        return 0
-    else:
-        return 0
+        data = response.json().get('data')
+        if data:
+            return data.get('subscribers', 0)
+    return 0
