@@ -8,7 +8,7 @@ import sys
 
 def top_ten(subreddit):
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    headers = {'User-agent': 'myRedditScript/1.0'}
+    headers = {'User-agent': 'MyAPI/0.0.1'}
     response = requests.get(url, headers=headers, allow_redirects=False)
 
     if response.status_code == 200:
