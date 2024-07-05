@@ -9,11 +9,13 @@ def number_of_subscribers(subreddit):
     """ Set a custom header user-agent """
     headers = {"User-Agent": "ALU-scripting API 0.1"}
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    try:
+        response = requests.get(url, allow_redirects=False)
+    except requests.exceptions.RequestException:
+        return 0
 
     if response.status_code == 200:
-        data = response.json().get('data')
-        if data:
-            print("We got the data")
-            return data.get('subscribers', 0)
-    return 0
+        data = response.json()
+        return data.get("data", {}).get("subscribers", 0)
+    else:
+        return 0
